@@ -1,3 +1,0 @@
-example-2d.tar.gz filter=lfs diff=lfs merge=lfs -text
-example-3d.tar.gz filter=lfs diff=lfs merge=lfs -text
-example-thetaMode.tar.gz filter=lfs diff=lfs merge=lfs -text
