@@ -17,3 +17,8 @@ tar -zxvf example-2d.tar.gz
 tar -zxvf example-3d.tar.gz
 tar -zxvf example-thetaMode.tar.gz
 ```
+
+Note: The datasets were produced with the Particle-In-Cell code
+[Warp](https://bitbucket.org/berkeleylab/warp), from the scripts in
+`scripts/`. The resolution is intentionally very low, so as to produce
+data of manageable size.
