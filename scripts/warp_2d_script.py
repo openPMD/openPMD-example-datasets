@@ -81,7 +81,7 @@ particle_pusher = 1
 # Current smoothing parameters
 # ----------------------------
 # Turn current smoothing on or off (0:off; 1:on)
-use_smooth = 1 
+use_smooth = 1
 # Number of passes of smoother and compensator in each direction (x, y, z)
 npass_smooth = array([[ 0 , 0 ], [ 0 , 0 ], [ 1 , 1 ]])
 # Smoothing coefficients in each direction (x, y, z)
@@ -159,7 +159,7 @@ ramp_plateau = 20.e-6
 def plasma_dens_func( x, y, z ):
     """
     User-defined function: density profile of the plasma
-    
+
     It should return the relative density with respect to n_plasma,
     at the position x, y, z (i.e. return a number between 0 and 1)
 
@@ -189,7 +189,7 @@ def plasma_dens_func( x, y, z ):
 # -----------------
 # Initialize beam electrons (0:off, 1:on)
 # (Please be aware that initializing a beam in 2D geometry makes very little
-# physical sense, because of the long range of its space-charge fields) 
+# physical sense, because of the long range of its space-charge fields)
 use_beam = 0
 # Longitudinal momentum of the beam
 beam_uz = 100.
@@ -212,7 +212,7 @@ beam_rmax = beam_xmax
 def beam_dens_func(x, y, z):
     """
     User-defined function: density profile of the beam
-    
+
     It should return the relative density with respect to n_beam,
     at the position x, y, z (i.e. return a number between 0 and 1)
 
@@ -317,7 +317,7 @@ plasma_injector = PlasmaInjector( elec, ions, w3d, top, dim,
 # Continuously inject the plasma, if the moving window is on
 if use_moving_window :
     installuserinjection( plasma_injector.continuous_injection )
-        
+
 # Setup the diagnostics
 # ---------------------
 if write_fields == 1:
@@ -327,12 +327,19 @@ if write_fields == 1:
     installafterstep( diag1.write )
 if write_particles == 1:
     species_dict = { species.name : species for species in listofallspecies \
-            if not( species.name in ["Hydrogen0+", "electron from Hydrogen"] )}
+            if species.name == "electrons" }
     diag2 = ParticleDiagnostic( period=diag_period, top=top, w3d=w3d,
             species=species_dict, write_dir='./example-2d',
             particle_data={"position","momentum","weighting","id"},
             comm_world=comm_world, lparallel_output=parallel_output )
     installafterstep( diag2.write )
+    species_dict = { species.name : species for species in listofallspecies \
+            if species.name == "Hydrogen1+" }
+    diag3 = ParticleDiagnostic( period=diag_period, top=top, w3d=w3d,
+            species=species_dict, write_dir='./example-2d',
+            particle_data={"position"},
+            comm_world=comm_world, lparallel_output=parallel_output )
+    installafterstep( diag3.write )
 
 print('\nInitialization complete\n')
 
@@ -346,7 +353,7 @@ if interactive==0:
     while n_stepped < N_steps:
         step(10)
         n_stepped = n_stepped + 10
-        
+
 # Interactive mode
 elif interactive==1:
     print '<<< To execute n steps, type "step(n)" at the prompt >>>'
