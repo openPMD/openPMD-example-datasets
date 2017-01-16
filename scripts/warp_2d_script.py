@@ -24,7 +24,7 @@ dim = "2d"
 # Number of azimuthal modes beyond m=0, for "circ" (not used for "2d" and "3d")
 circ_m = 1
 # Total number of timesteps in the simulation
-N_steps = 500
+N_steps = 401
 # Whether to run the simulation interactively (0:off, 1:on)
 interactive = 0
 
@@ -59,7 +59,7 @@ v_moving_window = clight
 # Diagnostics
 # -----------
 # Period of diagnostics (in number of timesteps)
-diag_period = 25
+diag_period = 5
 # Whether to write the fields
 write_fields = 1
 # Whether to write the particles
@@ -324,7 +324,6 @@ if write_fields == 1:
     diag1 = FieldDiagnostic( period=diag_period, top=top, w3d=w3d, em=em,
                 comm_world=comm_world, lparallel_output=parallel_output,
                 write_dir='./example-2d', fieldtypes=["E", "rho"] )
-    installafterstep( diag1.write )
 if write_particles == 1:
     species_dict = { species.name : species for species in listofallspecies \
             if species.name == "electrons" }
@@ -332,14 +331,12 @@ if write_particles == 1:
             species=species_dict, write_dir='./example-2d',
             particle_data={"position","momentum","weighting","id"},
             comm_world=comm_world, lparallel_output=parallel_output )
-    installafterstep( diag2.write )
     species_dict = { species.name : species for species in listofallspecies \
             if species.name == "Hydrogen1+" }
     diag3 = ParticleDiagnostic( period=diag_period, top=top, w3d=w3d,
             species=species_dict, write_dir='./example-2d',
-            particle_data={"position"},
+            sub_sample=10,
             comm_world=comm_world, lparallel_output=parallel_output )
-    installafterstep( diag3.write )
 
 print('\nInitialization complete\n')
 
@@ -347,13 +344,10 @@ print('\nInitialization complete\n')
 # Simulation loop (Normal users should not modify this part either.)
 # -----------------------------------------------------------------------------
 
-# Non-interactive mode
-if interactive==0:
-    n_stepped=0
-    while n_stepped < N_steps:
-        step(10)
-        n_stepped = n_stepped + 10
+step(250)
+installafterstep( diag1.write )
+installafterstep( diag2.write )
+installafterstep( diag3.write )
+step(151)
 
-# Interactive mode
-elif interactive==1:
-    print '<<< To execute n steps, type "step(n)" at the prompt >>>'
+
