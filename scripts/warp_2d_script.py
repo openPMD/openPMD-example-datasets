@@ -11,7 +11,7 @@ Usage
     Otherwise, one can just type exit()
 """
 # Import warp-specific packages
-from warp_init_tools import *
+from warp.init_tools import *
 
 # -----------------------------------------------------------------------------
 # Parameters (Modify the values below to suit your needs)
@@ -59,7 +59,7 @@ v_moving_window = clight
 # Diagnostics
 # -----------
 # Period of diagnostics (in number of timesteps)
-diag_period = 100
+diag_period = 25
 # Whether to write the fields
 write_fields = 1
 # Whether to write the particles
@@ -128,9 +128,9 @@ use_ions = 1
 # Number of macroparticles per cell in each direction
 # In Circ, nppcelly is the number of particles along the
 # azimuthal direction. Use a multiple of 4*circ_m
-plasma_nx = 2
+plasma_nx = 1
 plasma_ny = 4
-plasma_nz = 2
+plasma_nz = 1
 
 # Plasma content and profile
 # --------------------------
@@ -274,6 +274,7 @@ if use_beam:
                                    beam_nz, dim, circ_m )
     beam = Species(type=Electron, weight=beam_weight, name='beam')
 # Set the numerical parameters only now: they affect the newly created species
+top.ssnpid = nextpid()
 set_numerics( depos_order, efetch, particle_pusher, dim)
 
 # Setup the field solver object
@@ -322,13 +323,14 @@ if use_moving_window :
 if write_fields == 1:
     diag1 = FieldDiagnostic( period=diag_period, top=top, w3d=w3d, em=em,
                 comm_world=comm_world, lparallel_output=parallel_output,
-                write_dir='./example-2d' )
+                write_dir='./example-2d', fieldtypes=["E", "rho"] )
     installafterstep( diag1.write )
 if write_particles == 1:
     species_dict = { species.name : species for species in listofallspecies \
             if not( species.name in ["Hydrogen0+", "electron from Hydrogen"] )}
     diag2 = ParticleDiagnostic( period=diag_period, top=top, w3d=w3d,
             species=species_dict, write_dir='./example-2d',
+            particle_data={"position","momentum","weighting","id"},
             comm_world=comm_world, lparallel_output=parallel_output )
     installafterstep( diag2.write )
 

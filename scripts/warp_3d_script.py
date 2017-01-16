@@ -11,7 +11,7 @@ Usage
     Otherwise, one can just type exit()
 """
 # Import warp-specific packages
-from warp_init_tools import *
+from warp.init_tools import *
 
 # -----------------------------------------------------------------------------
 # Parameters (Modify the values below to suit your needs)
