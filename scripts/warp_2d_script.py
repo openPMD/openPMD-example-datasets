@@ -11,7 +11,7 @@ Usage
     Otherwise, one can just type exit()
 """
 # Import warp-specific packages
-from warp_init_tools import *
+from warp.init_tools import *
 
 # -----------------------------------------------------------------------------
 # Parameters (Modify the values below to suit your needs)
@@ -24,7 +24,7 @@ dim = "2d"
 # Number of azimuthal modes beyond m=0, for "circ" (not used for "2d" and "3d")
 circ_m = 1
 # Total number of timesteps in the simulation
-N_steps = 500
+N_steps = 401
 # Whether to run the simulation interactively (0:off, 1:on)
 interactive = 0
 
@@ -59,7 +59,7 @@ v_moving_window = clight
 # Diagnostics
 # -----------
 # Period of diagnostics (in number of timesteps)
-diag_period = 100
+diag_period = 5
 # Whether to write the fields
 write_fields = 1
 # Whether to write the particles
@@ -81,7 +81,7 @@ particle_pusher = 1
 # Current smoothing parameters
 # ----------------------------
 # Turn current smoothing on or off (0:off; 1:on)
-use_smooth = 1 
+use_smooth = 1
 # Number of passes of smoother and compensator in each direction (x, y, z)
 npass_smooth = array([[ 0 , 0 ], [ 0 , 0 ], [ 1 , 1 ]])
 # Smoothing coefficients in each direction (x, y, z)
@@ -128,9 +128,9 @@ use_ions = 1
 # Number of macroparticles per cell in each direction
 # In Circ, nppcelly is the number of particles along the
 # azimuthal direction. Use a multiple of 4*circ_m
-plasma_nx = 2
+plasma_nx = 1
 plasma_ny = 4
-plasma_nz = 2
+plasma_nz = 1
 
 # Plasma content and profile
 # --------------------------
@@ -159,7 +159,7 @@ ramp_plateau = 20.e-6
 def plasma_dens_func( x, y, z ):
     """
     User-defined function: density profile of the plasma
-    
+
     It should return the relative density with respect to n_plasma,
     at the position x, y, z (i.e. return a number between 0 and 1)
 
@@ -189,7 +189,7 @@ def plasma_dens_func( x, y, z ):
 # -----------------
 # Initialize beam electrons (0:off, 1:on)
 # (Please be aware that initializing a beam in 2D geometry makes very little
-# physical sense, because of the long range of its space-charge fields) 
+# physical sense, because of the long range of its space-charge fields)
 use_beam = 0
 # Longitudinal momentum of the beam
 beam_uz = 100.
@@ -212,7 +212,7 @@ beam_rmax = beam_xmax
 def beam_dens_func(x, y, z):
     """
     User-defined function: density profile of the beam
-    
+
     It should return the relative density with respect to n_beam,
     at the position x, y, z (i.e. return a number between 0 and 1)
 
@@ -274,6 +274,7 @@ if use_beam:
                                    beam_nz, dim, circ_m )
     beam = Species(type=Electron, weight=beam_weight, name='beam')
 # Set the numerical parameters only now: they affect the newly created species
+top.ssnpid = nextpid()
 set_numerics( depos_order, efetch, particle_pusher, dim)
 
 # Setup the field solver object
@@ -316,21 +317,26 @@ plasma_injector = PlasmaInjector( elec, ions, w3d, top, dim,
 # Continuously inject the plasma, if the moving window is on
 if use_moving_window :
     installuserinjection( plasma_injector.continuous_injection )
-        
+
 # Setup the diagnostics
 # ---------------------
 if write_fields == 1:
     diag1 = FieldDiagnostic( period=diag_period, top=top, w3d=w3d, em=em,
                 comm_world=comm_world, lparallel_output=parallel_output,
-                write_dir='./example-2d' )
-    installafterstep( diag1.write )
+                write_dir='./example-2d', fieldtypes=["E", "rho"] )
 if write_particles == 1:
     species_dict = { species.name : species for species in listofallspecies \
-            if not( species.name in ["Hydrogen0+", "electron from Hydrogen"] )}
+            if species.name == "electrons" }
     diag2 = ParticleDiagnostic( period=diag_period, top=top, w3d=w3d,
             species=species_dict, write_dir='./example-2d',
+            particle_data={"position","momentum","weighting","id"},
             comm_world=comm_world, lparallel_output=parallel_output )
-    installafterstep( diag2.write )
+    species_dict = { species.name : species for species in listofallspecies \
+            if species.name == "Hydrogen1+" }
+    diag3 = ParticleDiagnostic( period=diag_period, top=top, w3d=w3d,
+            species=species_dict, write_dir='./example-2d',
+            sub_sample=10,
+            comm_world=comm_world, lparallel_output=parallel_output )
 
 print('\nInitialization complete\n')
 
@@ -338,13 +344,10 @@ print('\nInitialization complete\n')
 # Simulation loop (Normal users should not modify this part either.)
 # -----------------------------------------------------------------------------
 
-# Non-interactive mode
-if interactive==0:
-    n_stepped=0
-    while n_stepped < N_steps:
-        step(10)
-        n_stepped = n_stepped + 10
-        
-# Interactive mode
-elif interactive==1:
-    print '<<< To execute n steps, type "step(n)" at the prompt >>>'
+step(250)
+installafterstep( diag1.write )
+installafterstep( diag2.write )
+installafterstep( diag3.write )
+step(151)
+
+
