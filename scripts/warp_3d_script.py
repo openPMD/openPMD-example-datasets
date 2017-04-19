@@ -46,9 +46,9 @@ ymax = 10.e-6
 
 # Field boundary conditions (longitudinal and transverse respectively)
 f_boundz  = openbc
-f_boundxy = absorb
+f_boundxy = openbc
 # Particles boundary conditions (longitudinal and transverse respectively)
-p_boundz  = absorb
+p_boundz  = reflect
 p_boundxy = reflect
 
 # Moving window (0:off, 1:on)
