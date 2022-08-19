@@ -1,5 +1,7 @@
 # openPMD example datasets
 
+## Examples created with the code Warp
+
 These are example of [openPMD](http://www.openpmd.org/#/start) datasets, in three different geometries:
 - 2D Cartesian
 - 3D Cartesian
@@ -18,7 +20,11 @@ tar -zxvf example-3d.tar.gz
 tar -zxvf example-thetaMode.tar.gz
 ```
 
-Note: The datasets were produced with the Particle-In-Cell code
+The datasets were produced with the Particle-In-Cell code
 [Warp](https://bitbucket.org/berkeleylab/warp), from the scripts in
 `scripts/`. The resolution is intentionally very low, so as to produce
 data of manageable size.
+
+## Examples created with the code FEMM
+
+<Add some text explaining how to create these files>
