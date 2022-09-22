@@ -21,7 +21,6 @@ B.grid_spacing = [0.05, 0.05, 0.125]
 B.grid_global_offset = [-1.15, -1.15, -0.375]
 B.axis_labels = ['x', 'y', 'z']
 B.geometry = io.Geometry.cartesian
-# unit system agnostic dimension
 B.unit_dimension = {
     io.Unit_Dimension.M:  1,
     io.Unit_Dimension.I: -1,
@@ -51,7 +50,6 @@ E.grid_spacing = np.array([0.05, 0.05, 0.125])
 E.grid_global_offset = np.array([-1.15, -1.15, -0.375])
 E.axis_labels = ['x', 'y', 'z']
 E.geometry = io.Geometry.cartesian
-# unit system agnostic dimension
 E.unit_dimension = {
     io.Unit_Dimension.M:  1,
     io.Unit_Dimension.L:  1,
