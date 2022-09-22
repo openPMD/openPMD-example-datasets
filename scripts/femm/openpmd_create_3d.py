@@ -6,47 +6,15 @@ import numpy as np
 nx = 47
 ny = 47
 nz = 47
-
-# create openpmd file
-series = io.Series("example-femm-3d.h5",io.Access.create)
-
-# only 1 iteratiion needed
-it = series.iterations[1]
-
 # read data
 Bx_data = np.loadtxt('Bx_3d.txt').reshape(nx, ny, nz)
 By_data = np.loadtxt('By_3d.txt').reshape(nx, ny, nz)
 Bz_data = np.loadtxt('Bz_3d.txt').reshape(nx, ny, nz)
 
-fx = open("Bx_3d.txt", "r+")
-fy = open("By_3d.txt", "r+")
-fz = open("Bz_3d.txt", "r+")
-Bx_lines = fx.readlines()
-By_lines = fy.readlines()
-Bz_lines = fz.readlines()
-fx.close()
-fy.close()
-fz.close()
-
-# create arrays
-x_data = np.arange(nx*ny*nz,dtype=np.float64).reshape(nx,ny,nz)
-y_data = np.arange(nx*ny*nz,dtype=np.float64).reshape(nx,ny,nz)
-z_data = np.arange(nx*ny*nz,dtype=np.float64).reshape(nx,ny,nz)
-
-# load data into arrays
-c = 0
-for i in range(nx):
-    for j in range(ny):
-        for k in range(nz):
-            x_data[i,j,k] = float(Bx_lines[c])
-            y_data[i,j,k] = float(By_lines[c])
-            z_data[i,j,k] = float(Bz_lines[c])
-            c += 1
-
-assert np.allclose( Bx_data, x_data )
-assert np.allclose( By_data, y_data )
-assert np.allclose( Bz_data, z_data )
-            
+# create openpmd file
+series = io.Series("example-femm-3d.h5",io.Access.create)
+# only 1 iteratiion needed
+it = series.iterations[1]            
 # set meta information
 B = it.meshes["B"]
 B.grid_spacing = [0.05, 0.05, 0.125]
@@ -68,14 +36,14 @@ B_y.position = [0,0,0]
 B_z = B["z"]
 B_z.position = [0,0,0]
 
-dataset = io.Dataset(x_data.dtype,x_data.shape)
+dataset = io.Dataset(Bx_data.dtype, Bx_data.shape)
 B_x.reset_dataset(dataset)
 B_y.reset_dataset(dataset)
 B_z.reset_dataset(dataset)
 
-B_x.store_chunk(x_data)
-B_y.store_chunk(y_data)
-B_z.store_chunk(z_data)
+B_x.store_chunk(Bx_data)
+B_y.store_chunk(By_data)
+B_z.store_chunk(Bz_data)
 
 E = it.meshes["E"]
 # set meta information
@@ -99,7 +67,7 @@ E_y.position = [0,0,0]
 E_z = E["z"]
 E_z.position = [0,0,0]
 
-dataset = io.Dataset(x_data.dtype,x_data.shape)
+dataset = io.Dataset(Bx_data.dtype,Bx_data.shape)
 E_x.reset_dataset(dataset)
 E_y.reset_dataset(dataset)
 E_z.reset_dataset(dataset)
