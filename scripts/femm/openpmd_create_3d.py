@@ -41,8 +41,8 @@ for i in range(nx):
 
 # set meta information
 B = it.meshes["B"]
-B.grid_spacing = np.array([0.05, 0.05, 0.125])
-B.grid_global_offset = np.array([-1.15, -1.15, -0.375])
+B.grid_spacing = [0.05, 0.05, 0.125]
+B.grid_global_offset = [-1.15, -1.15, -0.375]
 B.axis_labels = ['x', 'y', 'z']
 B.geometry = io.Geometry.cartesian
 # unit system agnostic dimension
