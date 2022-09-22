@@ -1,8 +1,6 @@
 # openPMD example datasets
 
-## Examples created with the code Warp
-
-These are example of [openPMD](http://www.openpmd.org/#/start) datasets, in three different geometries:
+This repository contains examples of [openPMD](http://www.openpmd.org/#/start) datasets, in three different geometries:
 - 2D Cartesian
 - 3D Cartesian
 - Cylindrical with azimuthal decomposition ("thetaMode")
@@ -18,13 +16,20 @@ cd openPMD-example-datasets
 tar -zxvf example-2d.tar.gz
 tar -zxvf example-3d.tar.gz
 tar -zxvf example-thetaMode.tar.gz
+...
 ```
 
-The datasets were produced with the Particle-In-Cell code
-[Warp](https://bitbucket.org/berkeleylab/warp), from the scripts in
-`scripts/`. The resolution is intentionally very low, so as to produce
-data of manageable size.
+# How where these files created?
 
-## Examples created with the code FEMM
+## Files created with the Particle-In-Cell code Warp
 
-<Add some text explaining how to create these files>
+The files `example-2d.tar.gz`, `example-3d.tar.gz` and `example-thetaMode.tar.gz` were produced with the Particle-In-Cell code
+[Warp](https://bitbucket.org/berkeleylab/warp). The resolution is intentionally very low, so as to produce data of manageable size.
+
+The scripts that were used in order to produce these openPMD files from Warp can be found in the directory `scripts/warp`.
+
+## Examples created with the finite-element code FEMM
+
+The files `example-femm-3d.h5` and `example-femm-thetaMode.h5` were produced withe the finite-element code [FEMM](https://www.femm.info/wiki/HomePage).
+
+The scripts that were used in order to produce these openPMD files can be found in the directory `scripts/femm`.
