@@ -14,6 +14,10 @@ series = io.Series("example-femm-3d.h5",io.Access.create)
 it = series.iterations[1]
 
 # read data
+Bx_data = np.loadtxt('Bx_3d.txt').reshape(nx, ny, nz)
+By_data = np.loadtxt('By_3d.txt').reshape(nx, ny, nz)
+Bz_data = np.loadtxt('Bz_3d.txt').reshape(nx, ny, nz)
+
 fx = open("Bx_3d.txt", "r+")
 fy = open("By_3d.txt", "r+")
 fz = open("Bz_3d.txt", "r+")
@@ -39,6 +43,10 @@ for i in range(nx):
             z_data[i,j,k] = float(Bz_lines[c])
             c += 1
 
+assert np.allclose( Bx_data, x_data )
+assert np.allclose( By_data, y_data )
+assert np.allclose( Bz_data, z_data )
+            
 # set meta information
 B = it.meshes["B"]
 B.grid_spacing = [0.05, 0.05, 0.125]
