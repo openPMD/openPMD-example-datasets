@@ -19,7 +19,7 @@ tar -zxvf example-thetaMode.tar.gz
 ...
 ```
 
-# How where these files created?
+# How were these files created?
 
 ## Files created with the Particle-In-Cell code Warp
 
@@ -30,6 +30,6 @@ The scripts that were used in order to produce these openPMD files from Warp can
 
 ## Examples created with the finite-element code FEMM
 
-The files `example-femm-3d.h5` and `example-femm-thetaMode.h5` were produced withe the finite-element code [FEMM](https://www.femm.info/wiki/HomePage).
+The files `example-femm-3d.h5` and `example-femm-thetaMode.h5` were produced using the finite-element code [FEMM](https://www.femm.info/wiki/HomePage).
 
 The scripts that were used in order to produce these openPMD files can be found in the directory `scripts/femm`.
