@@ -18,6 +18,12 @@ jobs:
       run: |
         python3 -m pip install --upgrade openPMD-validator
 
+    - name: Unpack
+      run: |
+        tar -xvf example-2d.tar.gz
+        tar -xvf example-3d.tar.gz
+        tar -xvf example-thetaMode.tar.gz
+
     - name: Test
       run: |
         for f in $(find . -name "*.h5")
