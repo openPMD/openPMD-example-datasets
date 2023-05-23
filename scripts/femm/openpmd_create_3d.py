@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import openpmd_api as io
 import numpy as np
 
@@ -17,7 +18,7 @@ series = io.Series("example-femm-3d.h5",io.Access.create)
 it = series.iterations[1]            
 # set meta information
 B = it.meshes["B"]
-B.grid_spacing = [0.05, 0.05, 0.125]
+B.grid_spacing = np.array([0.05, 0.05, 0.125])
 B.grid_global_offset = [-1.15, -1.15, -0.375]
 B.axis_labels = ['x', 'y', 'z']
 B.geometry = io.Geometry.cartesian
@@ -47,7 +48,7 @@ B_z.store_chunk(Bz_data)
 E = it.meshes["E"]
 # set meta information
 E.grid_spacing = np.array([0.05, 0.05, 0.125])
-E.grid_global_offset = np.array([-1.15, -1.15, -0.375])
+E.grid_global_offset = [-1.15, -1.15, -0.375]
 E.axis_labels = ['x', 'y', 'z']
 E.geometry = io.Geometry.cartesian
 E.unit_dimension = {
