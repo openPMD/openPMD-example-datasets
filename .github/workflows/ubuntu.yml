@@ -1,0 +1,28 @@
+name: 🐧 Ubuntu
+
+on: [push, pull_request]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.head_ref }}-ubuntu
+  cancel-in-progress: true
+
+jobs:
+  build_gcc:
+    name: Ubuntu
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Dependencies
+      run: |
+        python3 -m pip install --upgrade openPMD-validator
+
+    - name: Test
+      run: |
+        for f in $(find . -name "*.h5")
+        do
+            echo "Validating file ${f} ..."
+            openPMD_check_h5 -i ${f}
+            echo -e "Done\n"
+        done
