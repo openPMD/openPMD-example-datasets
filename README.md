@@ -36,4 +36,4 @@ The scripts that were used in order to produce these openPMD files can be found 
 
 ## Examples created with the Particle-In-Cell code PIConGPU
 
-The files `legacy_datasets.tar.gz` were producsed with the Particle-In-Cell code [PIConGPU](https://picongpu.readthedocs.io).
+The files `legacy_datasets.tar.gz` were produced with the Particle-In-Cell code [PIConGPU](https://picongpu.readthedocs.io).
