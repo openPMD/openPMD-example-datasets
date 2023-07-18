@@ -33,3 +33,7 @@ The scripts that were used in order to produce these openPMD files from Warp can
 The files `example-femm-3d.h5` and `example-femm-thetaMode.h5` were produced using the finite-element code [FEMM](https://www.femm.info/wiki/HomePage).
 
 The scripts that were used in order to produce these openPMD files can be found in the directory `scripts/femm`.
+
+## Examples created with the Particle-In-Cell code PIConGPU
+
+The files `legacy_datasets.tar.gz` were producsed with the Particle-In-Cell code [PIConGPU](https://picongpu.readthedocs.io).
